@@ -1,7 +1,7 @@
 import time
 import unittest
 from selenium import webdriver
-import Selenium2Library
+
 
 class TestYandexImages(unittest.TestCase):
     def testLinkImages(self):
