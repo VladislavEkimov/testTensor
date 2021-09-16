@@ -40,8 +40,35 @@ class TestYandexImages(unittest.TestCase):
         browser.switch_to.window(new_window)
 
         categoryImage = browser.find_element_by_css_selector('.PopularRequestList-Item_pos_0')
+        textCategoryImage = browser.find_element_by_xpath('/html/body/div[4]/div[1]/div[1]/div/div/div[1]/a/div[2]').text
+
         categoryImage.click()
-        time.sleep(2)
+        textInputImage = browser.find_element_by_css_selector("[name='text']").get_attribute('value')
+
+        self.assertEqual(textCategoryImage, textInputImage, 'The text of the input field and the category is different')
+
+
+    def testOpenImage(self):
+        browser = webdriver.Chrome()
+        link = 'https://yandex.ru/'
+        browser.implicitly_wait(5)
+        browser.get(link)
+
+        linkImage = browser.find_element_by_css_selector("[data-id='images']")
+        linkImage.click()
+
+        new_window = browser.window_handles[1]
+        browser.switch_to.window(new_window)
+
+        categoryImage = browser.find_element_by_css_selector('.PopularRequestList-Item_pos_0')
+        categoryImage.click()
+
+        temp = "'{\"row\":0,\"col\":0}'"
+        image = browser.find_element_by_css_selector(f"[data-grid-position={temp}]")
+        image.click()
+
+        time.sleep(5)
+
 
 if __name__ == "__main__":
     unittest.main()
