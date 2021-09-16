@@ -63,11 +63,14 @@ class TestYandexImages(unittest.TestCase):
         categoryImage = browser.find_element_by_css_selector('.PopularRequestList-Item_pos_0')
         categoryImage.click()
 
-        temp = "'{\"row\":0,\"col\":0}'"
-        image = browser.find_element_by_css_selector(f"[data-grid-position={temp}]")
+        text = "'{\"row\":0,\"col\":0}'"
+        image = browser.find_element_by_css_selector(f"[data-grid-position={text}]")
+        imageUrl1 = browser.find_element_by_css_selector(f"[data-grid-position={text}] .serp-item__thumb").get_attribute('src')
         image.click()
 
-        time.sleep(5)
+        imageUrl2 = browser.find_element_by_css_selector('.MMImage-Preview').get_attribute('src')
+
+        self.assertEqual(imageUrl1, imageUrl2, "The picture didn't open")
 
 
 if __name__ == "__main__":
