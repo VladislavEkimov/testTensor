@@ -98,6 +98,36 @@ class TestYandexImages(unittest.TestCase):
 
         self.assertNotEqual(imageUrl1, imageUrl2, "The next picture did not open")
 
+    def testOpenBackImage(self):
+        browser = webdriver.Chrome()
+        link = 'https://yandex.ru/'
+        browser.implicitly_wait(5)
+        browser.get(link)
+
+        linkImage = browser.find_element_by_css_selector("[data-id='images']")
+        linkImage.click()
+
+        new_window = browser.window_handles[1]
+        browser.switch_to.window(new_window)
+
+        categoryImage = browser.find_element_by_css_selector('.PopularRequestList-Item_pos_0')
+        categoryImage.click()
+
+        text = "'{\"row\":0,\"col\":0}'"
+        image = browser.find_element_by_css_selector(f"[data-grid-position={text}]")
+        imageUrl1 = browser.find_element_by_css_selector(f"[data-grid-position={text}] .serp-item__thumb").get_attribute('src')
+        image.click()
+
+        buttonNext = browser.find_element_by_css_selector('.CircleButton_type_next')
+        buttonNext.click()
+
+        buttonBack = browser.find_element_by_css_selector('.CircleButton_type_prev')
+        buttonBack.click()
+
+        imageUrl2 = browser.find_element_by_css_selector('.MMImage-Preview').get_attribute('src')
+
+        self.assertEqual(imageUrl1, imageUrl2, "The pictures don't match")
+
 
 if __name__ == "__main__":
     unittest.main()
